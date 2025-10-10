@@ -21,6 +21,13 @@ sourcetype="WinEventLog:Security"
 | table _time, src_ip, username, failed_attempts, successful_logins
 | rename src_ip AS "Source IP", username AS "Username", failed_attempts AS "Failed Attempts", successful_logins AS "Successful Logins"
 
+🧠 Detection Logic Explained
+Looks at Windows Event IDs 4625 (Failed Logon) and 4624 (Successful Logon).
+Groups login events by source IP and username within a 5-minute window.
+Flags cases where there are ≥ 5 failed attempts and no successful logins.
+Returns details for quick triage in the SOC dashboard.
+
+
 | Setting               | Value                                                      |
 | --------------------- | ---------------------------------------------------------- |
 | **Trigger Condition** | Failed attempts ≥ 5 and no success                         |
