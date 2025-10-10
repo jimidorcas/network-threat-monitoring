@@ -1,0 +1,33 @@
+#############################################
+# SPL Query: Brute-Force Login Detection
+# Author: Dorcas Olujimi
+# Description:
+# Detects repeated failed login attempts from the same IP or user within a short time window.
+# Objective:
+# Identify brute-force attacks targeting authentication services.
+#############################################
+
+index=security OR index=windows
+sourcetype="WinEventLog:Security"
+(EventCode=4625 OR EventCode=4624)
+| eval login_status=if(EventCode=4625, "Failed", "Successful")
+| stats count(eval(login_status="Failed")) as failed_attempts, 
+        count(eval(login_status="Successful")) as successful_logins, 
+        values(src_ip) as source_ip, 
+        values(user) as username 
+        by src_ip, user, bin(_time, 5m)
+| where failed_attempts >= 5 AND successful_logins < 1
+| sort - failed_attempts
+| table _time, src_ip, username, failed_attempts, successful_logins
+| rename src_ip AS "Source IP", username AS "Username", failed_attempts AS "Failed Attempts", successful_logins AS "Successful Logins"
+
+| Setting               | Value                                                      |
+| --------------------- | ---------------------------------------------------------- |
+| **Trigger Condition** | Failed attempts ≥ 5 and no success                         |
+| **Time Window**       | 5 minutes                                                  |
+| **Severity**          | Medium (escalate if repeated)                              |
+| **Alert Action**      | Notify SOC channel, isolate endpoint if threshold persists |
+
+| Technique ID | Name        |
+| ------------ | ----------- |
+| **T1110**    | Brute Force |
