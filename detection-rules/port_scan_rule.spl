@@ -1,0 +1,19 @@
+#############################################
+# SPL Query: Port Scan Detection
+# Author: Dorcas Olujimi
+# Description:
+# Detects potential port scanning activity based on multiple connection attempts
+# from the same source IP to multiple destination ports within a short time window.
+# Objective:
+# Identify reconnaissance or lateral movement activity.
+#############################################
+
+index=firewall OR index=network
+sourcetype="firewall:traffic"
+action="allowed" OR action="denied"
+| stats dc(dest_port) as unique_ports, values(dest_port) as ports_scanned, count as connection_count 
+        by src_ip, dest_ip, bin(_time, 5m)
+| where unique_ports >= 10
+| sort - unique_ports
+| table _time, src_ip, dest_ip, unique_ports, ports_scanned, connection_count
+| rename src_ip AS "Source IP", dest_ip AS "Destination IP", unique_ports AS "Unique Ports Scanned", connection_count AS "Total Connections"
