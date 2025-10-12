@@ -17,3 +17,8 @@ action="allowed" OR action="denied"
 | sort - unique_ports
 | table _time, src_ip, dest_ip, unique_ports, ports_scanned, connection_count
 | rename src_ip AS "Source IP", dest_ip AS "Destination IP", unique_ports AS "Unique Ports Scanned", connection_count AS "Total Connections"
+| Setting               | Value                                                         |
+| --------------------- | ------------------------------------------------------------- |
+| **Trigger Condition** | ≥10 unique destination ports in 5 minutes                     |
+| **Severity**          | Medium                                                        |
+| **Action**            | Send alert to SOC, flag IP for temporary blocking if repeated |
