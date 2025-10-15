@@ -74,4 +74,3 @@ Contains analysis of triggered alerts, investigation notes, and tuning recommend
 
 ---
 
-📌 *This project highlights practical SOC analysis and SIEM monitoring skills essential for Cybersecurity Analyst and Tier 1–2 SOC roles.*
