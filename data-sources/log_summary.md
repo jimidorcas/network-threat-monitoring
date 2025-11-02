@@ -42,7 +42,7 @@ Identify port scanning activity by tracking sequential port connection attempts 
 
 ## 💻 3. Endpoint Detection Logs
 **Purpose:** Provide visibility into endpoint processes, malware detections, and suspicious file executions.  
-**Source:** EDR Platform (e.g., CrowdStrike, Microsoft Defender for Endpoint).  
+**Source:** EDR Platform (CrowdStrike).  
 
 | Field | Description |
 |--------|--------------|
