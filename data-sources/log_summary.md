@@ -3,7 +3,7 @@
 ## 🧭 Overview
 This document provides an overview of the log sources ingested into the SIEM environment for monitoring and threat detection.  
 The logs are collected from a simulated enterprise network that includes **user authentication systems, endpoint security tools, and network infrastructure**.  
-Each log type contributes unique insights that, when correlated, support real-time threat detection and incident investigation.
+Each log type contributes unique insights that, when correlated, support real-time threat detection and incident investigation
 
 ---
 
